@@ -5,6 +5,8 @@ import com.badlogic.gdx.math.Vector;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.world.GameMap;
 
+import java.util.HashMap;
+
 public abstract class Entity {
 
     protected Vector2 pos;
@@ -13,11 +15,12 @@ public abstract class Entity {
     protected GameMap map;
     protected boolean grounded = false;
 
-    public Entity(float x, float y, EntityType type, GameMap map) {
-        this.pos = new Vector2(x, y);
+    public void create (EntitySnapshot snapshot, EntityType type, GameMap map) {
+        this.pos = new Vector2(snapshot.getX(), snapshot.getY());
         this.type = type;
         this.map = map;
     }
+
 
 
     public void update (float deltaTime, float gravity) {
@@ -46,6 +49,10 @@ public abstract class Entity {
         if(!map.doesRectCollideWithMap(newX, pos.y, getWidth(), getHeight()))
             this.pos.x = newX;
 
+    }
+
+    public EntitySnapshot getSaveSnapshot () {
+        return new EntitySnapshot(type.getId(), pos.x, pos.y);
     }
 
 

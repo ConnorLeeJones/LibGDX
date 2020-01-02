@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.world.GameMap;
 
 public class Player extends Entity {
@@ -14,9 +15,10 @@ public class Player extends Entity {
     Texture image;
 
 
-    public Player(float x, float y, GameMap map) {
-        super(x, y, EntityType.PLAYER, map);
+    public void create (EntitySnapshot snapshot, EntityType type, GameMap map) {
+        super.create(snapshot, type, map);
         image = new Texture("player.png");
+        //spawnRadius = snapshot.getFloat("SpawnRadius", 50);
     }
 
 
@@ -36,6 +38,14 @@ public class Player extends Entity {
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT))
             moveX(SPEED * deltaTime);
 
+    }
+
+
+    @Override
+    public EntitySnapshot getSaveSnapshot () {
+        EntitySnapshot snapshot = super.getSaveSnapshot();
+        //snapShot.putFloat("spawnRadius", spawnRadius);
+        return snapshot;
     }
 
 

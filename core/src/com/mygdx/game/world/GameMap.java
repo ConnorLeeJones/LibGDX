@@ -1,8 +1,11 @@
 package com.mygdx.game.world;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.entity.Entity;
+import com.mygdx.game.entity.EntityLoader;
 import com.mygdx.game.entity.Player;
 
 import java.util.ArrayList;
@@ -13,7 +16,8 @@ public abstract class GameMap {
 
     public GameMap() {
         entities = new ArrayList<>();
-        entities.add(new Player(40, 450, this));
+        entities.addAll(EntityLoader.loadEntities("basic", this, entities));
+
     }
 
     public void render(OrthographicCamera camera, SpriteBatch batch){
@@ -25,8 +29,15 @@ public abstract class GameMap {
         for (Entity entity : entities){
             entity.update(delta, - 9.8f);
         }
+
+        if(Gdx.input.isKeyPressed(Input.Keys.S))
+            EntityLoader.saveEntities("basic", entities);
+
+
+
     }
-    public abstract void dispose ();
+    public void dispose (){
+    };
 
     public TileType getTileTypeByLocation(int layer, float x, float y){
         return this.getTileTypeByCoordinate(layer, (int) (x / TileType.TILE_SIZE), (int) (y / TileType.TILE_SIZE));
